@@ -1,0 +1,105 @@
+Kerti@IDEAPAD c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 48
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database toko_db;
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [(none)]> use toko_db;
+Database changed
+MariaDB [toko_db]> create table pelanggan(
+    -> id_pelanggan int primary key,
+    -> nama_pelanggan varchar(50),
+    -> kota varchar(100));
+Query OK, 0 rows affected (0.020 sec)
+
+MariaDB [toko_db]> create table pesanan(
+    -> id_pesanan int primary key,
+    -> tanggal_pesanan date,
+    -> id_pelanggan int);
+Query OK, 0 rows affected (0.020 sec)
+
+MariaDB [toko_db]> insert into pelanggan values
+    -> (1, 'Andi', 'Jakarta'),
+    -> (2, 'Budi', 'Bandung'),
+    -> (3, 'Citra', 'Surabaya'),
+    -> (4, 'Dewi', 'Medan');
+Query OK, 4 rows affected (0.014 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [toko_db]> insert into pesanan values
+    -> (101, '2024-01-10', 1),
+    -> (102, '2024-01-11', 2),
+    -> (103, '2024-01-12', 2);
+Query OK, 3 rows affected (0.014 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [toko_db]> select * from pelanggan;
++--------------+----------------+----------+
+| id_pelanggan | nama_pelanggan | kota     |
++--------------+----------------+----------+
+|            1 | Andi           | Jakarta  |
+|            2 | Budi           | Bandung  |
+|            3 | Citra          | Surabaya |
+|            4 | Dewi           | Medan    |
++--------------+----------------+----------+
+4 rows in set (0.000 sec)
+
+MariaDB [toko_db]> select * from pesanan;
++------------+-----------------+--------------+
+| id_pesanan | tanggal_pesanan | id_pelanggan |
++------------+-----------------+--------------+
+|        101 | 2024-01-10      |            1 |
+|        102 | 2024-01-11      |            2 |
+|        103 | 2024-01-12      |            2 |
++------------+-----------------+--------------+
+3 rows in set (0.000 sec)
+
+MariaDB [toko_db]> select pelanggan.nama_pelanggan, pesanan.tanggal_pesanan
+    -> from pelanggan
+    -> inner join pesanan
+    -> on pelanggan.id_pelanggan = pesanan.id_pelanggan;
++----------------+-----------------+
+| nama_pelanggan | tanggal_pesanan |
++----------------+-----------------+
+| Andi           | 2024-01-10      |
+| Budi           | 2024-01-11      |
+| Budi           | 2024-01-12      |
++----------------+-----------------+
+3 rows in set (0.001 sec)
+
+MariaDB [toko_db]> select pelanggan.nama_pelanggan, pesanan.tanggal_pesanan
+    -> from pelanggan
+    -> right join pesanan
+    -> on pelanggan.id_pelanggan = pesanan.id_pelanggan;
++----------------+-----------------+
+| nama_pelanggan | tanggal_pesanan |
++----------------+-----------------+
+| Andi           | 2024-01-10      |
+| Budi           | 2024-01-11      |
+| Budi           | 2024-01-12      |
++----------------+-----------------+
+3 rows in set (0.001 sec)
+
+MariaDB [toko_db]> select pelanggan.nama_pelanggan, pesanan.tanggal_pesanan
+    -> from pelanggan
+    -> left join pesanan
+    -> on pelanggan.id_pelanggan = pesanan.id_pelanggan;
++----------------+-----------------+
+| nama_pelanggan | tanggal_pesanan |
++----------------+-----------------+
+| Andi           | 2024-01-10      |
+| Budi           | 2024-01-11      |
+| Budi           | 2024-01-12      |
+| Citra          | NULL            |
+| Dewi           | NULL            |
++----------------+-----------------+
+5 rows in set (0.001 sec)
+
+MariaDB [toko_db]>
